@@ -72,7 +72,7 @@ public class AuthService {
         }
 
         String email = jwtTokenProvider.getEmail(refreshToken);
-        String savedToken = jwtTokenProvider.createRefreshToken(email);
+        String savedToken = redisTemplate.opsForValue().get("RT:" + email);
 
         if (savedToken == null || !savedToken.equals(refreshToken)) {
             throw new IllegalArgumentException("Invalid refresh token.");
