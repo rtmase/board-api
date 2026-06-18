@@ -4,6 +4,7 @@ package com.rtmase.board.post.entity;
 import com.rtmase.board.user.entity.User;
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.springframework.data.annotation.CreatedDate;
@@ -35,6 +36,7 @@ public class Post {
     @LastModifiedDate
     private LocalDateTime updatedAt;
 
+    @Builder
     public Post(String title, String content, User user) {
         this.title = title;
         this.content = content;
