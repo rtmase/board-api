@@ -8,6 +8,9 @@ import com.rtmase.board.post.repository.PostRepository;
 import com.rtmase.board.user.entity.User;
 import com.rtmase.board.user.repository.UserRepository;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
+import org.springframework.data.domain.PageRequest;
+import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
@@ -22,11 +25,10 @@ public class PostService {
     private final UserRepository userRepository;
 
     @Transactional(readOnly = true)
-    public List<PostListResponse> getAllPages() {
-        return postRepository.findAllByOrderByCreatedAtDesc()
-                .stream()
-                .map(PostListResponse::new)
-                .collect(Collectors.toList());
+    public Page<PostListResponse> getAllPages(int page, int size) {
+        Pageable pageable = PageRequest.of(page, size);
+        return postRepository.findAllByOrderByCreatedAtDesc(pageable)
+                .map(PostListResponse::new);
     }
 
     @Transactional(readOnly = true)

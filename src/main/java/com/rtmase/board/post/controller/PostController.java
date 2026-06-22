@@ -8,6 +8,7 @@ import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.tags.Tag;
 import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
+import org.springframework.data.domain.Page;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.security.core.userdetails.UserDetails;
@@ -25,8 +26,11 @@ public class PostController {
 
     @GetMapping
     @Operation(summary = "Retrieve all posts")
-    public ResponseEntity<List<PostListResponse>> getAllPosts() {
-        return ResponseEntity.ok(postService.getAllPages());
+    public ResponseEntity<Page<PostListResponse>> getAllPosts(
+            @RequestParam(defaultValue = "0") int page,
+            @RequestParam(defaultValue = "10") int size
+    ) {
+        return ResponseEntity.ok(postService.getAllPages(page, size));
     }
 
     @GetMapping("/{id}")
